@@ -16,8 +16,8 @@ const getBaseUrl = () => {
     return '/api';
   }
   
-  // Fallback
-  return 'http://localhost:5000/api';
+  // Production fallback - use the actual deployed backend
+  return 'https://zammer5.onrender.com/api';
 };
 
 // Enhanced debugging with colors
