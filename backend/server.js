@@ -1,6 +1,7 @@
 require('dotenv').config();
 const http = require('http');
 const socketIo = require('socket.io');
+const connectDB = require('./config/db');
 
 // Environment variables
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -23,7 +24,7 @@ let httpServer;
 try {
   // Load app module
   console.log('Loading app module...');
-  const { app } = require('./app');
+  const { app, server } = require('./app');
   console.log('✅ App module loaded successfully');
 
   // Create HTTP server
@@ -118,6 +119,9 @@ try {
 🔔 Real-time: OPERATIONAL
 🚀 Environment: ${NODE_ENV}
 ===============================`);
+      
+      // Connect to MongoDB
+      connectDB();
 
       // 🎯 PRODUCTION: Additional startup checks
       if (NODE_ENV === 'production') {

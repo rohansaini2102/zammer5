@@ -408,11 +408,8 @@ if (NODE_ENV === 'production') {
 // Error handling middleware
 app.use(errorHandler);
 
-// Start server, explicitly binding to 0.0.0.0 for Elastic Beanstalk
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n✅ Server running in ${NODE_ENV} mode on http://0.0.0.0:${PORT}\n`);
-  connectDB();
-});
+// Export app and server for external use (server.js will handle listening)
+module.exports = { app, server };
 
 // Graceful shutdown handling
 process.on('SIGINT', () => {
