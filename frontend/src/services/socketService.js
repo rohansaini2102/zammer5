@@ -42,30 +42,43 @@ class SocketService {
       return 'http://localhost:5000';
     }
     
-    return 'http://localhost:5000';
+    return 'https://zammer5.onrender.com';
   }
 
   // Initialize Socket.io connection
   connect() {
-    try {
-      const serverUrl = this.getServerUrl();
-      debugLog('🔌 Initializing Socket.io connection', { serverUrl }, 'socket');
+    return new Promise((resolve, reject) => {
+      try {
+        const serverUrl = this.getServerUrl();
+        debugLog('🔌 Initializing Socket.io connection', { serverUrl }, 'socket');
 
-      this.socket = io(serverUrl, {
-        withCredentials: true,
-        transports: ['websocket', 'polling'],
-        timeout: 10000,
-        reconnection: true,
-        reconnectionAttempts: this.maxReconnectAttempts,
-        reconnectionDelay: this.reconnectInterval
-      });
+        this.socket = io(serverUrl, {
+          withCredentials: true,
+          transports: ['websocket', 'polling'],
+          timeout: 10000,
+          reconnection: true,
+          reconnectionAttempts: this.maxReconnectAttempts,
+          reconnectionDelay: this.reconnectInterval
+        });
 
-      this.setupEventHandlers();
-      return this.socket;
-    } catch (error) {
-      debugLog('❌ Socket connection error', error, 'error');
-      return null;
-    }
+        // Set up event handlers first
+        this.setupEventHandlers();
+
+        // Listen for successful connection
+        this.socket.on('connect', () => {
+          resolve(this.socket);
+        });
+
+        // Listen for connection errors
+        this.socket.on('connect_error', (error) => {
+          reject(error);
+        });
+
+      } catch (error) {
+        debugLog('❌ Socket connection error', error, 'error');
+        reject(error);
+      }
+    });
   }
 
   // Setup basic event handlers
@@ -343,12 +356,11 @@ class SocketService {
         debugLog('🔄 Auto-connecting as buyer', { userId: user._id, userName: user.name }, 'buyer');
         
         if (!this.isConnected) {
-          this.connect();
-          setTimeout(() => {
-            if (this.isConnected) {
-              this.joinBuyerRoom(user._id);
-            }
-          }, 1000);
+          this.connect().then(() => {
+            this.joinBuyerRoom(user._id);
+          }).catch(error => {
+            debugLog('❌ Auto-connect failed for buyer', error, 'error');
+          });
         }
         
         return { type: 'buyer', user };
@@ -361,12 +373,11 @@ class SocketService {
         debugLog('🔄 Auto-connecting as seller', { sellerId: seller._id, sellerName: seller.firstName }, 'socket');
         
         if (!this.isConnected) {
-          this.connect();
-          setTimeout(() => {
-            if (this.isConnected) {
-              this.joinSellerRoom(seller._id);
-            }
-          }, 1000);
+          this.connect().then(() => {
+            this.joinSellerRoom(seller._id);
+          }).catch(error => {
+            debugLog('❌ Auto-connect failed for seller', error, 'error');
+          });
         }
         
         return { type: 'seller', seller };
