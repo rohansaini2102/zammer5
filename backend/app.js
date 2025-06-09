@@ -37,10 +37,9 @@ const getAllowedOrigins = () => {
     'https://zammer-git-main-udditworks-projects.vercel.app',
     'https://zammer-jet.vercel.app',
     'https://zammer5.onrender.com', // Add Render backend URL for self-referencing
-    // Add your frontend deployment URLs here
-    'https://zammer-frontend.vercel.app', // Example Vercel deployment
-    'https://zammer.netlify.app', // Example Netlify deployment
-    'https://zammer-app.com' // Example custom domain
+    // Frontend deployment URLs
+    'https://zammer5.vercel.app', // Main Vercel deployment
+    'https://zammer5-rohan-sainis-projects.vercel.app', // Vercel preview deployment
   ];
   
   // Add production URLs from environment if provided

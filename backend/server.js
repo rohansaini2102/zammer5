@@ -37,10 +37,9 @@ try {
       'http://127.0.0.1:3000',
       'https://localhost:3000',
       'https://zammer5.onrender.com', // Add Render backend URL
-      // Add your frontend deployment URLs here
-      'https://zammer-frontend.vercel.app', // Example Vercel deployment
-      'https://zammer.netlify.app', // Example Netlify deployment
-      'https://zammer-app.com' // Example custom domain
+      // Frontend deployment URLs
+      'https://zammer5.vercel.app', // Main Vercel deployment
+      'https://zammer5-rohan-sainis-projects.vercel.app', // Vercel preview deployment
     ];
     
     // Add production frontend URL from environment if provided
