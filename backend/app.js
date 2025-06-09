@@ -35,20 +35,26 @@ const getAllowedOrigins = () => {
     'https://localhost:3000',
     'http://zammer2.ap-south-1.elasticbeanstalk.com',
     'https://zammer-git-main-udditworks-projects.vercel.app',
-    'https://zammer-jet.vercel.app'
+    'https://zammer-jet.vercel.app',
+    'https://zammer5.onrender.com', // Add Render backend URL for self-referencing
+    // Add your frontend deployment URLs here
+    'https://zammer-frontend.vercel.app', // Example Vercel deployment
+    'https://zammer.netlify.app', // Example Netlify deployment
+    'https://zammer-app.com' // Example custom domain
   ];
   
-  // Add production URLs
+  // Add production URLs from environment if provided
   if (FRONTEND_URL) {
     origins.push(FRONTEND_URL);
   }
   
-  // Add Amplify app domains (update these with your actual Amplify URLs)
+  // Add wildcard patterns for common deployment platforms
   origins.push(
     /https:\/\/.*\.amplifyapp\.com$/,
     /https:\/\/.*\.cloudfront\.net$/,
-    // Add your custom domain here if you have one
-    // 'https://your-custom-domain.com'
+    /https:\/\/.*\.vercel\.app$/,
+    /https:\/\/.*\.netlify\.app$/,
+    /https:\/\/.*\.onrender\.com$/
   );
   
   return origins;

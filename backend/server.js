@@ -35,18 +35,26 @@ try {
     const origins = [
       'http://localhost:3000',
       'http://127.0.0.1:3000',
-      'https://localhost:3000'
+      'https://localhost:3000',
+      'https://zammer5.onrender.com', // Add Render backend URL
+      // Add your frontend deployment URLs here
+      'https://zammer-frontend.vercel.app', // Example Vercel deployment
+      'https://zammer.netlify.app', // Example Netlify deployment
+      'https://zammer-app.com' // Example custom domain
     ];
     
-    // Add production frontend URL
+    // Add production frontend URL from environment if provided
     if (FRONTEND_URL && FRONTEND_URL !== 'http://localhost:3000') {
       origins.push(FRONTEND_URL);
     }
     
-    // Add Amplify and CloudFront domains
+    // Add wildcard patterns for common deployment platforms
     origins.push(
       /https:\/\/.*\.amplifyapp\.com$/,
-      /https:\/\/.*\.cloudfront\.net$/
+      /https:\/\/.*\.cloudfront\.net$/,
+      /https:\/\/.*\.vercel\.app$/,
+      /https:\/\/.*\.netlify\.app$/,
+      /https:\/\/.*\.onrender\.com$/
     );
     
     return origins;
